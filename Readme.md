@@ -1,4 +1,4 @@
-# Toggle Management - Lambda Function
+# Feature Management - Lambda Function
 
 This is a messy lambda function that lets you manage featues, which are stored in a s3 bucket.
 
