@@ -1,11 +1,3 @@
-// describe how to setup lambda.
-// create a new lambda function in AWS console., also s3 bucket.
-// create a new role for lambda function to access s3 bucket. write, read, delete, list.
-// cors configuration in s3 bucket and lambda function to allow access from localhost or any other domain.
-// use apid gateway if you want
-// good ideas to setup logging and monitoring via cloudwatch.
-// use aws cli to deploy lambda function.
-
 # Toggle Management - Lambda Function
 
 This is a messy lambda function that lets you manage featues, which are stored in a s3 bucket.
