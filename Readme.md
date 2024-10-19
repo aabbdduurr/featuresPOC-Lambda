@@ -19,10 +19,10 @@ This is a messy lambda function that lets you manage featues, which are stored i
 ```bash
 curl --location '<LAMBDA_ENDPOINT>' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYWJkdXIucmFobWFuQGRhem4uY29tIn19.JaoRe9I2OrDoqbS7fhmaFVYedBZtXlU2xk1k1kRyP5c' \
+--header 'Authorization: Bearer ••••••'' \
 --data '{
   "action": "add-platform",
-  "newPlatforms": ["LRDS"]
+  "newPlatforms": ["WEB"]
 }'
 ```
 
@@ -31,7 +31,7 @@ curl --location '<LAMBDA_ENDPOINT>' \
 ```bash
 curl --location '<LAMBDA_ENDPOINT>' \
 --header 'Content-Type: application/json' \
---header 'Authorization: ••••••' \
+--header 'Authorization: Bearer ••••••' \
 --data '{
   "action": "create-segment",
   "segmentName": "country",
