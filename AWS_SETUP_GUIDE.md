@@ -1,4 +1,4 @@
-# 🚀 AWS Deployment Quick Start Guide
+# AWS Deployment Quick Start Guide
 
 ## Step 1: Configure AWS CLI
 
@@ -61,7 +61,7 @@ For future code updates, use the deploy script:
 ./deploy.sh your-lambda-function-name
 ```
 
-## 🔍 Troubleshooting
+## Troubleshooting
 
 ### "Unable to locate credentials"
 - Run `aws configure` and enter your credentials
@@ -77,7 +77,7 @@ For future code updates, use the deploy script:
 - The script generates unique bucket names
 - If it fails, wait a few minutes and try again
 
-## 📊 What the Setup Script Creates
+## What the Setup Script Creates
 
 1. **S3 Bucket** - Stores your feature flag data
 2. **IAM Role** - Allows Lambda to access S3
@@ -85,14 +85,14 @@ For future code updates, use the deploy script:
 4. **Lambda Function** - Your feature toggle service
 5. **API Gateway** (optional) - HTTP endpoint for your Lambda
 
-## 💡 Tips
+## Tips
 
 - **Free Tier**: AWS offers free tier for Lambda (1M requests/month)
 - **Security**: Use least-privilege IAM policies in production
 - **Monitoring**: Check CloudWatch logs for debugging
 - **Cost**: Monitor S3 storage and Lambda execution costs
 
-## 🎯 Next Steps After Deployment
+## Next Steps After Deployment
 
 1. Test your function in AWS Console
 2. Update JWT_SECRET in your code

@@ -1,5 +1,5 @@
 import { PLATFORMS_FILE } from "../config/constants.mjs";
-import { fetchS3File, writeS3File } from "../utils/s3.mjs";
+import { fetchS3File, writeS3File, getPlatformFilePath } from "../utils/s3.mjs";
 import { validatePlatformName } from "../validation/validators.mjs";
 
 // Add new platform(s) to platforms.json
@@ -28,6 +28,16 @@ export const addPlatform = async (newPlatforms) => {
   // Add the new platforms to the existing platforms data
   platformsData.push(...newPlatforms);
 
-  // Write the updated platforms file back to S3
-  await writeS3File(PLATFORMS_FILE, platformsData);
+  // Create individual platform files for each new platform
+  const platformCreationPromises = newPlatforms.map(async (platform) => {
+    const platformFilePath = getPlatformFilePath(platform);
+    const initialPlatformData = { groups: [] };
+    await writeS3File(platformFilePath, initialPlatformData);
+  });
+
+  // Write the updated platforms file and create platform files concurrently
+  await Promise.all([
+    writeS3File(PLATFORMS_FILE, platformsData),
+    ...platformCreationPromises
+  ]);
 };

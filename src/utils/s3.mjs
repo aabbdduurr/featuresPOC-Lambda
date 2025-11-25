@@ -45,6 +45,11 @@ export const writeS3File = async (key, body) => {
     Key: key,
     Body: JSON.stringify(body),
     ContentType: "application/json",
+    CacheControl: "no-cache, no-store, must-revalidate",
+    Expires: new Date(0), // Set to epoch time (Jan 1, 1970)
+    Metadata: {
+      "last-modified": new Date().toISOString()
+    }
   };
   await s3Client.send(new PutObjectCommand(params));
 };

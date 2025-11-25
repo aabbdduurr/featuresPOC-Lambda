@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
-    "build": "npm run lint && echo '✅ Build successful'",
+    "build": "npm run lint && echo 'Build successful'",
     "package": "zip -r deployment.zip src/ package.json node_modules/ -x '*.DS_Store' 'node_modules/.cache/*'",
     "clean": "rm -f deployment.zip",
     "setup:aws": "./setup-aws.sh",

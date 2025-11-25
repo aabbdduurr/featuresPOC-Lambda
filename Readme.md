@@ -4,12 +4,12 @@ A serverless AWS Lambda function for managing feature flags with S3 as the stora
 
 ## Features
 
-- 🚀 **Platform Management**: Create and manage multiple platforms (Web, Mobile, etc.)
-- 🎯 **Feature Segmentation**: Target features to specific user segments
-- 📊 **Rollout Control**: Gradual feature rollouts with percentage-based distribution
-- 🔐 **JWT Authentication**: Secure API access with JSON Web Tokens
-- 📝 **Audit Logging**: Complete audit trail of all feature changes
-- 🏗️ **Modular Architecture**: Clean, organized, and maintainable codebase
+- **Platform Management**: Create and manage multiple platforms (Web, Mobile, etc.)
+- **Feature Segmentation**: Target features to specific user segments
+- **Rollout Control**: Gradual feature rollouts with percentage-based distribution
+- **JWT Authentication**: Secure API access with JSON Web Tokens
+- **Audit Logging**: Complete audit trail of all feature changes
+- **Modular Architecture**: Clean, organized, and maintainable codebase
 
 ## Project Structure
 
@@ -42,167 +42,29 @@ src/
 - Node.js 18.x or later
 - AWS CLI configured
 
-### AWS Resources Setup
+### Centralized Configuration
 
-1. **Create S3 Bucket**
-   ```bash
-   aws s3 mb s3://your-feature-toggle-bucket
-   ```
+**`config.env` is your single source of truth** for all configuration:
+- Shell scripts read from this file
+- Lambda function gets these as environment variables  
+- Application code reads from `process.env`
 
-2. **Create IAM Role for Lambda**
-   - Create a role with the following policies:
-     - `AWSLambdaBasicExecutionRole`
-     - Custom policy for S3 access:
-   ```json
-   {
-     "Version": "2012-10-17",
-     "Statement": [
-       {
-         "Effect": "Allow",
-         "Action": [
-           "s3:GetObject",
-           "s3:PutObject",
-           "s3:DeleteObject",
-           "s3:ListBucket"
-         ],
-         "Resource": [
-           "arn:aws:s3:::your-feature-toggle-bucket",
-           "arn:aws:s3:::your-feature-toggle-bucket/*"
-         ]
-       }
-     ]
-   }
-   ```
+**Setup:**
+```bash
+# 1. Edit config.env with your settings (optional)
+nano config.env
 
-3. **Create Lambda Function**
-   ```bash
-   aws lambda create-function \
-     --function-name feature-toggle-lambda \
-     --runtime nodejs18.x \
-     --handler src/index.handler \
-     --zip-file fileb://deployment.zip \
-     --role arn:aws:iam::YOUR-ACCOUNT:role/lambda-s3-role
-   ```
-
-4. **Configure API Gateway** (Optional)
-   - Create a REST API
-   - Create a resource and method
-   - Enable CORS
-   - Deploy the API
-
-### Environment Configuration
-
-Update `src/config/constants.mjs` with your configuration:
-```javascript
-export const BUCKET = "your-feature-toggle-bucket";
-export const JWT_SECRET = "your-jwt-secret";
+# Example customizations:
+AWS_REGION=us-east-1  # Change to your preferred region
+BUCKET_NAME=your-unique-bucket-name
+JWT_SECRET=your-secure-secret
 ```
+
+**No more scattered configuration!** Everything is controlled from one file.
 
 ## API Usage
 
-All requests require a valid JWT token in the Authorization header:
-```
-Authorization: Bearer <your-jwt-token>
-```
-
-### Platform Management
-
-**Add Platform**
-```bash
-curl -X POST '<LAMBDA_ENDPOINT>' \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer <your-jwt-token>' \
-  -d '{
-    "action": "add-platform",
-    "newPlatforms": ["WEB", "MOBILE"]
-  }'
-```
-
-### Segment Management
-
-**Create Segment**
-```bash
-curl -X POST '<LAMBDA_ENDPOINT>' \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer <your-jwt-token>' \
-  -d '{
-    "action": "create-segment",
-    "segmentName": "country",
-    "segmentDescription": "User Country",
-    "segmentValues": ["US", "UK", "CA"]
-  }'
-```
-
-**Update Segment**
-```bash
-curl -X POST '<LAMBDA_ENDPOINT>' \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer <your-jwt-token>' \
-  -d '{
-    "action": "update-segment",
-    "segmentName": "country",
-    "segmentDescription": "Updated Country Description"
-  }'
-```
-
-### Group Management
-
-**Create Group**
-```bash
-curl -X POST '<LAMBDA_ENDPOINT>' \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer <your-jwt-token>' \
-  -d '{
-    "action": "create-group",
-    "platform": "WEB",
-    "featureGroup": {
-      "id": "ui-features",
-      "description": "UI Feature Toggles"
-    }
-  }'
-```
-
-### Feature Management
-
-**Create Feature**
-```bash
-curl -X POST '<LAMBDA_ENDPOINT>' \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer <your-jwt-token>' \
-  -d '{
-    "action": "create-feature",
-    "platform": "WEB",
-    "feature": {
-      "id": "new-checkout",
-      "groupId": "ui-features",
-      "description": "New Checkout Flow",
-      "type": "boolean",
-      "value": false,
-      "rollout": {
-        "percentage": 50,
-        "secondaryValue": true
-      }
-    }
-  }'
-```
-
-**Change Feature Value**
-```bash
-curl -X POST '<LAMBDA_ENDPOINT>' \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer <your-jwt-token>' \
-  -d '{
-    "action": "change-feature-value",
-    "platform": "WEB",
-    "feature": {"id": "new-checkout"},
-    "segmentCombination": {"country": ["US"]},
-    "featureValue": true,
-    "rollout": {
-      "percentage": 25,
-      "secondaryValue": false
-    }
-  }'
-```
+Refer to the [API Documentation](API_DOCUMENTATION.md) for detailed endpoint information, request/response formats, and examples.
 
 ## Development
 
@@ -218,7 +80,7 @@ npm run lint
 npm run lint:fix
 ```
 
-## 🚀 Quick Start Deployment
+## Quick Start Deployment
 
 ### 1. Configure AWS
 ```bash
@@ -229,12 +91,17 @@ brew install awscli
 aws configure
 ```
 
-### 2. One-Time Setup
+### 2. Configure Your Deployment
 ```bash
-# Run the automated setup script
+# 1. Customize your configuration (optional)
+# Edit config.env to change region, bucket name, etc.
+
+# 2. Run the automated setup script
 npm run setup:aws
 # OR
 ./setup-aws.sh
+
+# The API endpoint will be automatically saved to config.env!
 ```
 
 This will create:
@@ -243,7 +110,15 @@ This will create:
 - Lambda function
 - API Gateway (optional)
 
-### 3. Deploy Updates
+### 3. Test Your Deployment
+```bash
+# Test your API endpoints automatically
+./test-lambda.sh
+
+# The test script will automatically use your API endpoint from config.env
+```
+
+### 4. Deploy Updates
 ```bash
 # For future code updates
 npm run deploy your-lambda-function-name

@@ -2,3 +2,7 @@ node_modules
 dist
 .DS_Store
 package-lock.json
+
+# Local configuration files
+my-config.env
+*.env.local
