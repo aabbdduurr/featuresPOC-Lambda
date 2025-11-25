@@ -17,7 +17,7 @@ const JWT_SECRET = "togglePOC";
 const LOG_LIMIT = 100;
 
 // AWS S3 Client
-const s3Client = new S3Client({ region: "us-east-1" });
+const s3Client = new S3Client({ region: "ap-south-1" });
 const ajv = new Ajv({ allErrors: true });
 
 // Helper to construct platform file path

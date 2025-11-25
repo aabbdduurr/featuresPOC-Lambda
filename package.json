@@ -1,15 +1,25 @@
 {
-  "name": "tooglelambda",
+  "name": "feature-toggle-lambda",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "AWS Lambda function for managing feature flags with S3 storage backend",
+  "main": "src/index.mjs",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "build": "npm run lint && echo '✅ Build successful'",
+    "package": "zip -r deployment.zip src/ package.json node_modules/ -x '*.DS_Store' 'node_modules/.cache/*'",
+    "clean": "rm -f deployment.zip",
+    "setup:aws": "./setup-aws.sh",
+    "deploy": "./deploy.sh",
+    "test:lambda": "./test-lambda.sh"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["feature-flags", "feature-toggle", "aws-lambda", "s3", "serverless"],
+  "author": "abdurrahman",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.0.0",
     "ajv": "^8.17.1",
     "jsonwebtoken": "^9.0.2"
   },
